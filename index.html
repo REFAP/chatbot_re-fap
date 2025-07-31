@@ -156,6 +156,8 @@
             font-size: 11px;
             transition: all 0.3s ease;
             box-shadow: 0 2px 6px rgba(39, 174, 96, 0.3);
+            border: none;
+            cursor: pointer;
         }
 
         .cta-button:hover {
@@ -204,6 +206,23 @@
 
         .footer-links a:hover {
             color: #27ae60;
+        }
+
+        .retry-button {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .retry-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
         }
 
         /* Modal pour le formulaire de contact */
@@ -342,6 +361,12 @@
             box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
         }
 
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .required {
             color: #e74c3c;
         }
@@ -383,23 +408,6 @@
                 padding: 8px;
                 font-size: 12px;
             }
-        }
-
-        .retry-button {
-            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-top: 15px;
-            transition: all 0.3s ease;
-        }
-
-        .retry-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
         }
 
         @media (max-width: 768px) {
@@ -566,9 +574,12 @@
 
     <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <script>
-        // Initialize EmailJS avec la vraie clé publique
-        emailjs.init('3rihXzSVz18YSOR9IaecY');
-
+        // Initialiser EmailJS (nouvelle version)
+        (function() {
+            emailjs.init('3rihXzSVz18YSOR9IaecY');
+        })();
+    </script>
+    <script>
         let loadTimeout;
 
         function reloadBot() {
@@ -625,15 +636,15 @@
                         const style = iframeDoc.createElement('style');
                         style.textContent = `
                             body {
-                                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
+                                background: linear-gradient(135deg, #1a2e1a 0%, #163e16 50%, #0f460f 100%) !important;
                                 color: #ffffff !important;
                             }
                             .message-bot, .bot-message {
-                                background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%) !important;
+                                background: linear-gradient(135deg, #27ae60 0%, #229954 100%) !important;
                                 color: white !important;
                             }
                             .message-user, .user-message {
-                                background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
+                                background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%) !important;
                                 color: white !important;
                             }
                             input, textarea {
@@ -642,7 +653,7 @@
                                 border: 1px solid rgba(255, 255, 255, 0.2) !important;
                             }
                             button {
-                                background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%) !important;
+                                background: linear-gradient(135deg, #27ae60 0%, #229954 100%) !important;
                                 color: white !important;
                                 border: none !important;
                             }
@@ -701,16 +712,20 @@
             // Debug: afficher les données
             console.log('Données à envoyer:', data);
             
-            // Envoi via EmailJS avec le nouveau template et variables standard
-            emailjs.send('service_kkjsqa8', 'template_438y8od', {
+            // Envoi via EmailJS avec paramètres corrigés
+            const templateParams = {
                 from_name: data.prenom + ' ' + data.nom,
-                from_email: data.email || 'non-renseigne@exemple.com',
+                from_email: data.email || 'client@re-fap.fr',
                 phone: data.telephone,
                 vehicle: data.vehicule || 'Non renseigné',
                 problem: data.probleme || 'Non renseigné',
                 message: data.message || 'Aucun message',
-                reply_to: data.email || 'non-renseigne@exemple.com'
-            })
+                to_email: 'jmantignac@ecoturbo.fr'
+            };
+            
+            console.log('Paramètres envoyés:', templateParams);
+            
+            emailjs.send('service_kkjsqa8', 'template_438y8od', templateParams)
             .then((response) => {
                 console.log('EmailJS Success:', response);
                 alert('✅ Votre demande de rappel a été envoyée !\n\nNous vous contacterons dans les plus brefs délais.\n\nMerci de votre confiance en Re-Fap.');
