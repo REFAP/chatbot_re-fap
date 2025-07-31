@@ -206,6 +206,130 @@
             color: #27ae60;
         }
 
+        /* Modal pour le formulaire de contact */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a2e1a 0%, #163e16 100%);
+            margin: 5% auto;
+            padding: 25px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            border: 2px solid rgba(39, 174, 96, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: modalSlideIn 0.3s ease-out;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(39, 174, 96, 0.3);
+            padding-bottom: 15px;
+        }
+
+        .modal-title {
+            color: #27ae60;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .close {
+            color: #fff;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close:hover {
+            color: #27ae60;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(39, 174, 96, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #27ae60;
+            box-shadow: 0 0 10px rgba(39, 174, 96, 0.3);
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 16px;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(39, 174, 96, 0.4);
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
         .retry-button {
             background: linear-gradient(135deg, #27ae60 0%, #229954 100%);
             color: white;
@@ -300,17 +424,17 @@
 
         <div class="footer-section">
             <div class="cta-buttons">
-                <a href="https://re-fap.com" class="cta-button">
-                    🔧 Nos Services FAP
+                <a href="https://www.auto.re-fap.fr" class="cta-button" target="_blank">
+                    🔧 Re-Fap chez Carter-Cash
                 </a>
-                <a href="https://re-fap.com/contact" class="cta-button secondary">
-                    📞 Nous Contacter
+                <button class="cta-button secondary" onclick="openContactForm()">
+                    📞 Être Rappelé
+                </button>
+                <a href="https://re-fap.fr/trouver_garage_partenaire/" class="cta-button" target="_blank">
+                    📅 Prendre RDV Diagnostic
                 </a>
-                <a href="https://re-fap.com/devis" class="cta-button">
-                    💰 Devis Gratuit
-                </a>
-                <a href="https://re-fap.com/actualites" class="cta-button secondary">
-                    📰 Actualités FAP
+                <a href="https://www.re-fap.fr" class="cta-button secondary" target="_blank">
+                    🌟 Découvrir Re-Fap
                 </a>
             </div>
             
@@ -325,6 +449,73 @@
                     <a href="https://re-fap.com/cgu">CGU</a>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal formulaire de contact -->
+    <div id="contactModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Être Rappelé par Re-Fap</h2>
+                <span class="close" onclick="closeContactForm()">&times;</span>
+            </div>
+            <form id="contactForm" onsubmit="submitContactForm(event)">
+                <div class="form-group">
+                    <label for="nom">Nom <span class="required">*</span></label>
+                    <input type="text" id="nom" name="nom" required placeholder="Votre nom">
+                </div>
+                
+                <div class="form-group">
+                    <label for="prenom">Prénom <span class="required">*</span></label>
+                    <input type="text" id="prenom" name="prenom" required placeholder="Votre prénom">
+                </div>
+                
+                <div class="form-group">
+                    <label for="telephone">Téléphone <span class="required">*</span></label>
+                    <input type="tel" id="telephone" name="telephone" required placeholder="06 12 34 56 78">
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" placeholder="votre@email.com">
+                </div>
+                
+                <div class="form-group">
+                    <label for="vehicule">Véhicule</label>
+                    <input type="text" id="vehicule" name="vehicule" placeholder="Marque, modèle, année">
+                </div>
+                
+                <div class="form-group">
+                    <label for="probleme">Problème FAP</label>
+                    <select id="probleme" name="probleme">
+                        <option value="">Sélectionnez un problème</option>
+                        <option value="voyant-fap">Voyant FAP allumé</option>
+                        <option value="perte-puissance">Perte de puissance</option>
+                        <option value="fumee-noire">Fumée noire</option>
+                        <option value="regeneration">Problème de régénération</option>
+                        <option value="autre">Autre</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="creneau">Créneau préféré</label>
+                    <select id="creneau" name="creneau">
+                        <option value="">Quand vous voulez</option>
+                        <option value="matin">Matin (9h-12h)</option>
+                        <option value="apres-midi">Après-midi (14h-17h)</option>
+                        <option value="soir">Soir (17h-19h)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="message">Message (optionnel)</label>
+                    <textarea id="message" name="message" rows="3" placeholder="Décrivez votre problème ou vos questions..."></textarea>
+                </div>
+                
+                <button type="submit" class="submit-btn">
+                    📞 Demander un rappel
+                </button>
+            </form>
         </div>
     </div>
 
@@ -433,6 +624,52 @@
                 container.style.opacity = '1';
                 container.style.transform = 'translateY(0)';
             }, 100);
+        });
+
+        // Fonctions pour le formulaire de contact
+        function openContactForm() {
+            document.getElementById('contactModal').style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Empêche le scroll en arrière-plan
+        }
+
+        function closeContactForm() {
+            document.getElementById('contactModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function submitContactForm(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const data = Object.fromEntries(formData);
+            
+            // Simulation d'envoi (remplacez par votre endpoint)
+            console.log('Données du formulaire:', data);
+            
+            // Afficher un message de confirmation
+            alert('✅ Votre demande de rappel a été envoyée !\n\nNous vous contacterons dans les plus brefs délais.\n\nMerci de votre confiance en Re-Fap.');
+            
+            // Fermer le modal et reset le formulaire
+            closeContactForm();
+            event.target.reset();
+            
+            // Ici vous pouvez ajouter l'envoi vers votre API
+            // fetch('/api/contact', { method: 'POST', body: formData })
+        }
+
+        // Fermer le modal en cliquant à l'extérieur
+        window.onclick = function(event) {
+            const modal = document.getElementById('contactModal');
+            if (event.target === modal) {
+                closeContactForm();
+            }
+        }
+
+        // Fermer le modal avec Echap
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeContactForm();
+            }
         });
     </script>
 </body>
