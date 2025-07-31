@@ -564,7 +564,11 @@
         </div>
     </div>
 
+    <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <script>
+        // Initialize EmailJS
+        emailjs.init('KRBUCBTBLZCACKD5FF2UEBJJOYAQKSIQGNUGQZRNLQZX6A3SINEWWWC4N4UBGTAF');
+
         let loadTimeout;
 
         function reloadBot() {
@@ -688,18 +692,36 @@
             const formData = new FormData(event.target);
             const data = Object.fromEntries(formData);
             
-            // Simulation d'envoi (remplacez par votre endpoint)
-            console.log('Données du formulaire:', data);
+            // Afficher le loading sur le bouton
+            const submitBtn = event.target.querySelector('.submit-btn');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '⏳ Envoi en cours...';
+            submitBtn.disabled = true;
             
-            // Afficher un message de confirmation
-            alert('✅ Votre demande de rappel a été envoyée !\n\nNous vous contacterons dans les plus brefs délais.\n\nMerci de votre confiance en Re-Fap.');
-            
-            // Fermer le modal et reset le formulaire
-            closeContactForm();
-            event.target.reset();
-            
-            // Ici vous pouvez ajouter l'envoi vers votre API
-            // fetch('/api/contact', { method: 'POST', body: formData })
+            // Envoi via EmailJS
+            emailjs.send('service_kkjsqa8', 'template_trg4qn', {
+                nom: data.nom,
+                prenom: data.prenom,
+                telephone: data.telephone,
+                email: data.email || 'Non renseigné',
+                vehicule: data.vehicule || 'Non renseigné',
+                probleme: data.probleme || 'Non renseigné',
+                message: data.message || 'Aucun message',
+                date: new Date().toLocaleString('fr-FR')
+            })
+            .then(() => {
+                alert('✅ Votre demande de rappel a été envoyée !\n\nNous vous contacterons dans les plus brefs délais.\n\nMerci de votre confiance en Re-Fap.');
+                closeContactForm();
+                event.target.reset();
+            })
+            .catch((error) => {
+                alert('❌ Erreur lors de l\'envoi. Veuillez réessayer ou nous contacter directement au 📞 [votre numéro].');
+                console.error('Erreur EmailJS:', error);
+            })
+            .finally(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            });
         }
 
         // Fermer le modal en cliquant à l'extérieur
