@@ -28,6 +28,7 @@
             background: rgba(255, 255, 255, 0.05);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
         }
 
         .header {
@@ -35,6 +36,8 @@
             padding: 20px;
             text-align: center;
             box-shadow: 0 4px 20px rgba(231, 76, 60, 0.3);
+            z-index: 10;
+            position: relative;
         }
 
         .header h1 {
@@ -50,221 +53,110 @@
             font-weight: 300;
         }
 
-        .chat-container {
+        .iframe-container {
             flex: 1;
-            overflow-y: auto;
-            padding: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bot-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: transparent;
+        }
+
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 26, 46, 0.9);
             display: flex;
             flex-direction: column;
-            gap: 15px;
-        }
-
-        .message {
-            max-width: 80%;
-            padding: 15px 20px;
-            border-radius: 20px;
-            animation: fadeInUp 0.3s ease-out;
-            word-wrap: break-word;
-        }
-
-        .message.bot {
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            align-self: flex-start;
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
-            border-bottom-left-radius: 5px;
-        }
-
-        .message.user {
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            align-self: flex-end;
-            box-shadow: 0 4px 15px rgba(52, 152, 219, 0.2);
-            border-bottom-right-radius: 5px;
-        }
-
-        .message-content {
-            font-size: 15px;
-            line-height: 1.5;
-        }
-
-        .message-time {
-            font-size: 11px;
-            opacity: 0.7;
-            margin-top: 8px;
-            text-align: right;
-        }
-
-        .input-container {
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.2);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .input-wrapper {
-            display: flex;
-            gap: 10px;
             align-items: center;
+            justify-content: center;
+            z-index: 5;
+            transition: opacity 0.5s ease;
         }
 
-        .message-input {
-            flex: 1;
-            padding: 15px 20px;
-            border: none;
-            border-radius: 25px;
-            background: rgba(255, 255, 255, 0.1);
-            color: #ffffff;
-            font-size: 15px;
-            backdrop-filter: blur(5px);
-            transition: all 0.3s ease;
-        }
-
-        .message-input::placeholder {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        .message-input:focus {
-            outline: none;
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 20px rgba(231, 76, 60, 0.3);
-        }
-
-        .send-button {
-            padding: 15px 25px;
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            border: none;
-            border-radius: 25px;
-            color: white;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-        }
-
-        .send-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
-        }
-
-        .send-button:active {
-            transform: translateY(0);
-        }
-
-        .send-button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .typing-indicator {
-            display: none;
-            max-width: 80%;
-            padding: 15px 20px;
-            border-radius: 20px;
-            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-            align-self: flex-start;
-            border-bottom-left-radius: 5px;
-            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.2);
-        }
-
-        .typing-dots {
-            display: flex;
-            gap: 4px;
-        }
-
-        .typing-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.7);
-            animation: typing 1.4s infinite ease-in-out;
-        }
-
-        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-
-        @keyframes typing {
-            0%, 80%, 100% { transform: scale(0); opacity: 0.5; }
-            40% { transform: scale(1); opacity: 1; }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .error-message {
-            background: rgba(231, 76, 60, 0.2);
-            color: #ff6b6b;
-            padding: 10px 15px;
-            border-radius: 10px;
-            font-size: 13px;
-            margin-top: 10px;
-            border: 1px solid rgba(231, 76, 60, 0.3);
-        }
-
-        .status-indicator {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 12px;
-            opacity: 0.7;
-            margin-bottom: 10px;
-        }
-
-        .status-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: #2ecc71;
-        }
-
-        .status-dot.connecting {
-            background: #f39c12;
-            animation: pulse 1s infinite;
-        }
-
-        .status-dot.error {
-            background: #e74c3c;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.5; }
-            100% { opacity: 1; }
-        }
-
-        /* Hidden iframe pour garder le bot original en arrière-plan */
-        .hidden-bot {
-            position: absolute;
-            left: -9999px;
-            width: 1px;
-            height: 1px;
+        .loading-overlay.hidden {
             opacity: 0;
             pointer-events: none;
         }
 
-        /* Scrollbar styling */
-        .chat-container::-webkit-scrollbar {
-            width: 6px;
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(231, 76, 60, 0.3);
+            border-top: 3px solid #e74c3c;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
         }
 
-        .chat-container::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 3px;
+        .loading-text {
+            color: #ffffff;
+            font-size: 16px;
+            text-align: center;
         }
 
-        .chat-container::-webkit-scrollbar-thumb {
-            background: rgba(231, 76, 60, 0.5);
-            border-radius: 3px;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .chat-container::-webkit-scrollbar-thumb:hover {
-            background: rgba(231, 76, 60, 0.7);
+        .refap-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .refap-overlay::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #e74c3c, transparent);
+            animation: scan 3s infinite;
+        }
+
+        @keyframes scan {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .footer-brand {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 12px;
+            opacity: 0.8;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .retry-button {
+            background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+        }
+
+        .retry-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
         }
 
         @media (max-width: 768px) {
@@ -274,10 +166,6 @@
                 border-radius: 0;
             }
 
-            .message {
-                max-width: 85%;
-            }
-
             .header h1 {
                 font-size: 20px;
             }
@@ -285,252 +173,136 @@
     </style>
 </head>
 <body>
-    <!-- Bot original caché -->
-    <iframe class="hidden-bot" id="originalBot" src="https://re-fap-autoai.vercel.app/"></iframe>
-
     <div class="container">
         <div class="header">
             <h1>AutoAI par Re-Fap</h1>
             <p>Assistant IA pour le diagnostic de filtre à particules</p>
-            <div class="status-indicator">
-                <div class="status-dot connecting" id="statusDot"></div>
-                <span id="statusText">Connexion à l'IA...</span>
-            </div>
         </div>
 
-        <div class="chat-container" id="chatContainer">
-            <div class="message bot">
-                <div class="message-content">
-                    AutoAI: Bonjour 👋! Je suis AutoAI, une intelligence artificielle conçue par les développeurs Re-Fap pour t'aider à diagnostiquer gratuitement des éventuels problèmes sur ton filtre à particules, et à trouver des solutions. As-tu des questions ? 😄
+        <div class="iframe-container">
+            <iframe 
+                id="botFrame" 
+                class="bot-iframe" 
+                src="https://re-fap-autoai.vercel.app/"
+                title="AutoAI Bot"
+                loading="lazy"
+            ></iframe>
+            
+            <div class="loading-overlay" id="loadingOverlay">
+                <div class="loading-spinner"></div>
+                <div class="loading-text">
+                    Chargement de l'intelligence artificielle...<br>
+                    <small>Connexion à AutoAI Re-Fap</small>
+                    <button class="retry-button" onclick="reloadBot()" style="display: none;" id="retryButton">
+                        Réessayer
+                    </button>
                 </div>
-                <div class="message-time" id="welcomeTime"></div>
             </div>
+
+            <div class="refap-overlay"></div>
         </div>
 
-        <div class="typing-indicator" id="typingIndicator">
-            <div class="typing-dots">
-                <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
-                <div class="typing-dot"></div>
-            </div>
-        </div>
-
-        <div class="input-container">
-            <div class="input-wrapper">
-                <input 
-                    type="text" 
-                    class="message-input" 
-                    id="messageInput" 
-                    placeholder="Décrivez votre problème de FAP..."
-                    maxlength="500"
-                >
-                <button class="send-button" id="sendButton" onclick="sendMessage()">
-                    Envoyer
-                </button>
-            </div>
+        <div class="footer-brand">
+            Propulsé par Re-Fap AutoAI • Diagnostic gratuit de filtre à particules
         </div>
     </div>
 
     <script>
-        let sessionId = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-        let isConnected = false;
+        let loadTimeout;
 
-        // Initialisation
-        document.getElementById('welcomeTime').textContent = getCurrentTime();
-        
-        // Gestion de l'input
-        document.getElementById('messageInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                sendMessage();
-            }
-        });
-
-        // Tentative de connexion à l'API du bot original
-        async function connectToOriginalBot() {
-            const statusDot = document.getElementById('statusDot');
-            const statusText = document.getElementById('statusText');
+        function reloadBot() {
+            const iframe = document.getElementById('botFrame');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const retryButton = document.getElementById('retryButton');
             
-            // Endpoints possibles à tester
-            const possibleEndpoints = [
-                'https://re-fap-autoai.vercel.app/api/chat',
-                'https://re-fap-autoai.vercel.app/api/message',
-                'https://re-fap-autoai.vercel.app/api/ai',
-                'https://re-fap-autoai.vercel.app/chat',
-                'https://re-fap-autoai.vercel.app/message'
-            ];
-
-            for (let endpoint of possibleEndpoints) {
-                try {
-                    statusText.textContent = `Test de connexion: ${endpoint.split('/').pop()}...`;
-                    
-                    const response = await fetch(endpoint, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            message: "test",
-                            sessionId: sessionId
-                        })
-                    });
-
-                    if (response.ok) {
-                        isConnected = true;
-                        statusDot.className = 'status-dot';
-                        statusText.textContent = 'Connecté à l\'IA AutoAI';
-                        console.log('Connexion réussie avec:', endpoint);
-                        window.botEndpoint = endpoint;
-                        return;
-                    }
-                } catch (error) {
-                    console.log('Erreur avec', endpoint, ':', error);
-                }
-            }
-
-            // Si aucun endpoint ne fonctionne, utiliser le mode iframe/postMessage
-            statusDot.className = 'status-dot';
-            statusText.textContent = 'Mode iframe actif';
-            setupIframeMode();
+            loadingOverlay.classList.remove('hidden');
+            retryButton.style.display = 'none';
+            
+            iframe.src = iframe.src; // Force reload
+            setupLoadingHandlers();
         }
 
-        function setupIframeMode() {
-            // Communication avec l'iframe du bot original
-            const iframe = document.getElementById('originalBot');
-            
-            window.addEventListener('message', function(event) {
-                if (event.origin !== 'https://re-fap-autoai.vercel.app') return;
+        function setupLoadingHandlers() {
+            const iframe = document.getElementById('botFrame');
+            const loadingOverlay = document.getElementById('loadingOverlay');
+            const retryButton = document.getElementById('retryButton');
+
+            // Clear any existing timeout
+            if (loadTimeout) {
+                clearTimeout(loadTimeout);
+            }
+
+            // Set a timeout to show retry button if loading takes too long
+            loadTimeout = setTimeout(() => {
+                retryButton.style.display = 'inline-block';
+            }, 10000);
+
+            iframe.addEventListener('load', function() {
+                clearTimeout(loadTimeout);
                 
-                if (event.data.type === 'botResponse') {
-                    hideTypingIndicator();
-                    addMessage(event.data.message, 'bot');
-                }
+                setTimeout(() => {
+                    loadingOverlay.classList.add('hidden');
+                }, 1000);
             });
 
-            isConnected = true;
-        }
-
-        function getCurrentTime() {
-            return new Date().toLocaleTimeString('fr-FR', { 
-                hour: '2-digit', 
-                minute: '2-digit' 
+            iframe.addEventListener('error', function() {
+                clearTimeout(loadTimeout);
+                retryButton.style.display = 'inline-block';
             });
         }
 
-        async function sendMessage() {
-            const input = document.getElementById('messageInput');
-            const sendButton = document.getElementById('sendButton');
-            const message = input.value.trim();
-            
-            if (message === '' || !isConnected) return;
-            
-            // Désactiver le bouton d'envoi
-            sendButton.disabled = true;
-            
-            // Ajouter le message utilisateur
-            addMessage(message, 'user');
-            input.value = '';
-            
-            // Simuler la saisie du bot
-            showTypingIndicator();
+        // Apply Re-Fap styling when possible
+        function applyRefapStyling() {
+            const iframe = document.getElementById('botFrame');
             
             try {
-                if (window.botEndpoint) {
-                    // Utiliser l'API REST si disponible
-                    const response = await fetch(window.botEndpoint, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                            'Accept': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            message: message,
-                            sessionId: sessionId,
-                            timestamp: new Date().toISOString()
-                        })
-                    });
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        hideTypingIndicator();
-                        addMessage(data.response || data.message || "Réponse reçue", 'bot');
-                    } else {
-                        throw new Error('Erreur API');
+                iframe.addEventListener('load', function() {
+                    try {
+                        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                        
+                        // Inject custom CSS into the iframe
+                        const style = iframeDoc.createElement('style');
+                        style.textContent = `
+                            body {
+                                background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%) !important;
+                                color: #ffffff !important;
+                            }
+                            .message-bot, .bot-message {
+                                background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%) !important;
+                                color: white !important;
+                            }
+                            .message-user, .user-message {
+                                background: linear-gradient(135deg, #3498db 0%, #2980b9 100%) !important;
+                                color: white !important;
+                            }
+                            input, textarea {
+                                background: rgba(255, 255, 255, 0.1) !important;
+                                color: white !important;
+                                border: 1px solid rgba(255, 255, 255, 0.2) !important;
+                            }
+                            button {
+                                background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%) !important;
+                                color: white !important;
+                                border: none !important;
+                            }
+                        `;
+                        iframeDoc.head.appendChild(style);
+                    } catch (e) {
+                        // Cross-origin restrictions prevent styling
+                        console.log('Cannot style iframe content due to CORS restrictions');
                     }
-                } else {
-                    // Mode iframe - envoyer le message à l'iframe
-                    const iframe = document.getElementById('originalBot');
-                    iframe.contentWindow.postMessage({
-                        type: 'userMessage',
-                        message: message,
-                        sessionId: sessionId
-                    }, 'https://re-fap-autoai.vercel.app');
-
-                    // Timeout de sécurité
-                    setTimeout(() => {
-                        hideTypingIndicator();
-                        addMessage("Je traite votre demande concernant le FAP. Pouvez-vous me donner plus de détails sur les symptômes observés ?", 'bot');
-                    }, 3000);
-                }
-            } catch (error) {
-                hideTypingIndicator();
-                addMessage("Désolé, je rencontre une difficulté technique. Pouvez-vous reformuler votre question ?", 'bot');
-                showError("Erreur de connexion avec l'IA");
+                });
+            } catch (e) {
+                console.log('Cannot access iframe content');
             }
-            
-            // Réactiver le bouton d'envoi
-            sendButton.disabled = false;
         }
 
-        function addMessage(content, sender) {
-            const chatContainer = document.getElementById('chatContainer');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}`;
-            
-            messageDiv.innerHTML = `
-                <div class="message-content">${formatMessage(content)}</div>
-                <div class="message-time">${getCurrentTime()}</div>
-            `;
-            
-            chatContainer.appendChild(messageDiv);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        function formatMessage(message) {
-            return message.replace(/\n/g, '<br>');
-        }
-
-        function showTypingIndicator() {
-            const indicator = document.getElementById('typingIndicator');
-            const chatContainer = document.getElementById('chatContainer');
-            
-            indicator.style.display = 'block';
-            chatContainer.appendChild(indicator);
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-        }
-
-        function hideTypingIndicator() {
-            const indicator = document.getElementById('typingIndicator');
-            indicator.style.display = 'none';
-        }
-
-        function showError(message) {
-            const chatContainer = document.getElementById('chatContainer');
-            const errorDiv = document.createElement('div');
-            errorDiv.className = 'error-message';
-            errorDiv.textContent = message;
-            chatContainer.appendChild(errorDiv);
-            
-            setTimeout(() => {
-                errorDiv.remove();
-            }, 5000);
-        }
-
-        // Démarrage de la connexion
-        connectToOriginalBot();
-
-        // Animation d'entrée
+        // Initialize
         document.addEventListener('DOMContentLoaded', function() {
+            setupLoadingHandlers();
+            applyRefapStyling();
+            
+            // Animation d'entrée
             const container = document.querySelector('.container');
             container.style.opacity = '0';
             container.style.transform = 'translateY(20px)';
