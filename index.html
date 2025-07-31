@@ -701,16 +701,15 @@
             // Debug: afficher les données
             console.log('Données à envoyer:', data);
             
-            // Envoi via EmailJS avec le nouveau template
+            // Envoi via EmailJS avec le nouveau template et variables standard
             emailjs.send('service_kkjsqa8', 'template_438y8od', {
-                nom: data.nom,
-                prenom: data.prenom,
-                telephone: data.telephone,
-                email: data.email || 'Non renseigné',
-                vehicule: data.vehicule || 'Non renseigné',
-                probleme: data.probleme || 'Non renseigné',
+                from_name: data.prenom + ' ' + data.nom,
+                from_email: data.email || 'non-renseigne@exemple.com',
+                phone: data.telephone,
+                vehicle: data.vehicule || 'Non renseigné',
+                problem: data.probleme || 'Non renseigné',
                 message: data.message || 'Aucun message',
-                date: new Date().toLocaleString('fr-FR')
+                reply_to: data.email || 'non-renseigne@exemple.com'
             })
             .then((response) => {
                 console.log('EmailJS Success:', response);
