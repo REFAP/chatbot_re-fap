@@ -566,8 +566,8 @@
 
     <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <script>
-        // Initialize EmailJS
-        emailjs.init('KRBUCBTBLZCACKD5FF2UEBJJOYAQKSIQGNUGQZRNLQZX6A3SINEWWWC4N4UBGTAF');
+        // Initialize EmailJS avec la vraie clé publique
+        emailjs.init('3rihXzSVz18YSOR9IaecY');
 
         let loadTimeout;
 
@@ -698,6 +698,9 @@
             submitBtn.innerHTML = '⏳ Envoi en cours...';
             submitBtn.disabled = true;
             
+            // Debug: afficher les données
+            console.log('Données à envoyer:', data);
+            
             // Envoi via EmailJS
             emailjs.send('service_kkjsqa8', 'template_trg4qn', {
                 nom: data.nom,
@@ -709,14 +712,31 @@
                 message: data.message || 'Aucun message',
                 date: new Date().toLocaleString('fr-FR')
             })
-            .then(() => {
+            .then((response) => {
+                console.log('EmailJS Success:', response);
                 alert('✅ Votre demande de rappel a été envoyée !\n\nNous vous contacterons dans les plus brefs délais.\n\nMerci de votre confiance en Re-Fap.');
                 closeContactForm();
                 event.target.reset();
             })
             .catch((error) => {
-                alert('❌ Erreur lors de l\'envoi. Veuillez réessayer ou nous contacter directement au 📞 [votre numéro].');
-                console.error('Erreur EmailJS:', error);
+                console.error('Erreur EmailJS détaillée:', error);
+                
+                // Message d'erreur plus détaillé
+                let errorMessage = '❌ Erreur lors de l\'envoi.\n\n';
+                
+                if (error.status === 422) {
+                    errorMessage += 'Problème de configuration du template.';
+                } else if (error.status === 400) {
+                    errorMessage += 'Données du formulaire invalides.';
+                } else if (error.status === 403) {
+                    errorMessage += 'Problème d\'authentification EmailJS.';
+                } else {
+                    errorMessage += 'Erreur technique: ' + (error.text || error.message || 'Inconnue');
+                }
+                
+                errorMessage += '\n\nVeuillez nous contacter directement au:\n📞 [Votre numéro de téléphone]\n📧 jmantignac@ecoturbo.fr';
+                
+                alert(errorMessage);
             })
             .finally(() => {
                 submitBtn.innerHTML = originalText;
